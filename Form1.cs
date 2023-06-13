@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace SWT_Project_2
 {
@@ -78,9 +79,13 @@ namespace SWT_Project_2
             };
             capture = false;
 
-            foreach (Control control in groupBox1.Controls.Cast<Control>().OrderBy(control => control.Name))
+            
 
+            for (int i = 1; i <= 24; i++) 
             {
+                string controlName = "pictureBox" + i;
+                Control control = groupBox1.Controls[controlName];
+
                 if (control is PictureBox pictureBox)
                 {
                     pictureBox.Click += PictureBox_Click;
@@ -106,7 +111,9 @@ namespace SWT_Project_2
                 return;
             }
 
-            Console.WriteLine($"Clicked on position {position}");
+            Debug.WriteLine($"*****");
+            Debug.WriteLine($"Clicked on position {position}");
+            Debug.WriteLine($"*****");
 
             if (capture)
             {
@@ -121,6 +128,7 @@ namespace SWT_Project_2
                     if (pictureBox.Image == null)
                     {
                         PhaseOnePlacePiece(pictureBox, position);
+  
                     }
                 }
                 else
@@ -132,6 +140,7 @@ namespace SWT_Project_2
                         if (selectedPictureBox != null && IsValidMove(int.Parse(selectedPictureBox.Name.Substring(10)) - 1, position))
                         {
                             PhaseTwoMovePiece(pictureBox);
+                            
                         }
                     }
                     else
@@ -151,9 +160,16 @@ namespace SWT_Project_2
 
         private void PhaseOnePlacePiece(PictureBox pictureBox, int position)
         {
-            pictureBox.Image = turn == 'r' ? Properties.Resources.Red : Properties.Resources.Blue;
-            pictureBox.Tag = turn;
 
+            PictureBox pb1 = allPictureBoxes[position];
+
+            pb1.Image = turn == 'r' ? Properties.Resources.Red : Properties.Resources.Blue;
+            pb1.Tag = turn;
+
+            string tag = $"Tag of position {position} is turned to : {pb1.Tag.ToString()}";
+            
+            Debug.WriteLine(tag);
+            Debug.WriteLine($"*****");
             if (turn == 'r')
             {
                 redPieces--;
@@ -182,16 +198,26 @@ namespace SWT_Project_2
                     PictureBox pb2 = allPictureBoxes[mill[1]];
                     PictureBox pb3 = allPictureBoxes[mill[2]];
 
-                    if (pb1.Image != null && pb2.Image != null && pb3.Image != null)
+                    // Debugging info
+                    string debugInfo = $"Checking Mill: {mill[0]}, {mill[1]}, {mill[2]}\n";
+                    debugInfo += $"pb1: {(pb1.Tag != null ? pb1.Tag.ToString() : "null")}, ";
+                    debugInfo += $"pb2: {(pb2.Tag != null ? pb2.Tag.ToString() : "null")}, ";
+                    debugInfo += $"pb3: {(pb3.Tag != null ? pb3.Tag.ToString() : "null")}\n";
+                    debugInfo += $"Current Turn: {turn}";
+                    Debug.WriteLine(debugInfo);
+
+                    // Check if all three positions are occupied by the current player's pieces
+                    if (pb1.Tag != null && pb2.Tag != null && pb3.Tag != null &&
+                        pb1.Tag.ToString() == turn.ToString() &&
+                        pb2.Tag.ToString() == turn.ToString() &&
+                        pb3.Tag.ToString() == turn.ToString())
                     {
-                        if (pb1.Tag.ToString() == pb2.Tag.ToString() && pb1.Tag.ToString() == pb3.Tag.ToString() && pb1.Tag.ToString() == turn.ToString())
-                        {
-                            return true;
-                        }
+                        return true;
                     }
                 }
             }
-
+            string debugEnd = $"----------------------------------";
+            Debug.WriteLine(debugEnd);
             return false;
         }
 
@@ -341,8 +367,7 @@ namespace SWT_Project_2
             }
         }
 
+        
     }
 }
-
-
 
