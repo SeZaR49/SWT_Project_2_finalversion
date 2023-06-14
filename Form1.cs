@@ -287,6 +287,14 @@ namespace SWT_Project_2
 
         private bool IsValidMove(int from, int to)
         {
+           // Check if the player is in Phase 3 (only three pieces left on the board)
+            if ((turn == 'r' && redPiecesOnBoard == 3) || (turn == 'b' && bluePiecesOnBoard == 3))
+            {
+                // In Phase 3, the player can move to any vacant point
+                return allPictureBoxes[to].Image == null;
+            }
+
+            // If not in Phase 3, the standard adjacency rule applies
             return adjacencyList[from].Contains(to);
         }
 
