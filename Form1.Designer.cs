@@ -1,4 +1,4 @@
-﻿namespace SWT_Project_2
+namespace SWT_Project_2
 {
     partial class Form1
     {
@@ -53,11 +53,15 @@
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.labelTurn = new System.Windows.Forms.Label();
             this.panelBoard = new System.Windows.Forms.Panel();
             this.labelMode = new System.Windows.Forms.Label();
+            this.restartButton = new System.Windows.Forms.Button();
+            this.redOffLabel = new System.Windows.Forms.Label();
+            this.redOnLabel = new System.Windows.Forms.Label();
+            this.blueOffLabel = new System.Windows.Forms.Label();
+            this.blueOnLabel = new System.Windows.Forms.Label();
+            this.enterNames = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox24)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox23)).BeginInit();
@@ -361,30 +365,6 @@
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
-            // radioButton1
-            // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(21, 17);
-            this.radioButton1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(117, 24);
-            this.radioButton1.TabIndex = 1;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "radioButton1";
-            this.radioButton1.UseVisualStyleBackColor = true;
-            // 
-            // radioButton2
-            // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(614, 17);
-            this.radioButton2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(117, 24);
-            this.radioButton2.TabIndex = 2;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "radioButton2";
-            this.radioButton2.UseVisualStyleBackColor = true;
-            // 
             // labelTurn
             // 
             this.labelTurn.AutoSize = true;
@@ -410,16 +390,76 @@
             this.labelMode.TabIndex = 5;
             this.labelMode.Text = "label2";
             // 
+            // restartButton
+            // 
+            this.restartButton.Location = new System.Drawing.Point(774, 744);
+            this.restartButton.Name = "restartButton";
+            this.restartButton.Size = new System.Drawing.Size(138, 29);
+            this.restartButton.TabIndex = 6;
+            this.restartButton.Text = "Restart Game";
+            this.restartButton.UseVisualStyleBackColor = true;
+            this.restartButton.Click += new System.EventHandler(this.restartButton_Click);
+            // 
+            // redOffLabel
+            // 
+            this.redOffLabel.AutoSize = true;
+            this.redOffLabel.Location = new System.Drawing.Point(676, 92);
+            this.redOffLabel.Name = "redOffLabel";
+            this.redOffLabel.Size = new System.Drawing.Size(50, 20);
+            this.redOffLabel.TabIndex = 7;
+            this.redOffLabel.Text = "label1";
+            // 
+            // redOnLabel
+            // 
+            this.redOnLabel.AutoSize = true;
+            this.redOnLabel.Location = new System.Drawing.Point(676, 112);
+            this.redOnLabel.Name = "redOnLabel";
+            this.redOnLabel.Size = new System.Drawing.Size(50, 20);
+            this.redOnLabel.TabIndex = 8;
+            this.redOnLabel.Text = "label2";
+            // 
+            // blueOffLabel
+            // 
+            this.blueOffLabel.AutoSize = true;
+            this.blueOffLabel.Location = new System.Drawing.Point(905, 92);
+            this.blueOffLabel.Name = "blueOffLabel";
+            this.blueOffLabel.Size = new System.Drawing.Size(50, 20);
+            this.blueOffLabel.TabIndex = 9;
+            this.blueOffLabel.Text = "label3";
+            // 
+            // blueOnLabel
+            // 
+            this.blueOnLabel.AutoSize = true;
+            this.blueOnLabel.Location = new System.Drawing.Point(905, 112);
+            this.blueOnLabel.Name = "blueOnLabel";
+            this.blueOnLabel.Size = new System.Drawing.Size(50, 20);
+            this.blueOnLabel.TabIndex = 10;
+            this.blueOnLabel.Text = "label4";
+            // 
+            // enterNames
+            // 
+            this.enterNames.Location = new System.Drawing.Point(784, 696);
+            this.enterNames.Name = "enterNames";
+            this.enterNames.Size = new System.Drawing.Size(116, 29);
+            this.enterNames.TabIndex = 11;
+            this.enterNames.Text = "Enter Names";
+            this.enterNames.UseVisualStyleBackColor = true;
+            this.enterNames.Click += new System.EventHandler(this.enterNames_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1024, 808);
+            this.Controls.Add(this.enterNames);
+            this.Controls.Add(this.blueOnLabel);
+            this.Controls.Add(this.blueOffLabel);
+            this.Controls.Add(this.redOnLabel);
+            this.Controls.Add(this.redOffLabel);
+            this.Controls.Add(this.restartButton);
             this.Controls.Add(this.labelMode);
             this.Controls.Add(this.panelBoard);
             this.Controls.Add(this.labelTurn);
-            this.Controls.Add(this.radioButton2);
-            this.Controls.Add(this.radioButton1);
             this.Controls.Add(this.groupBox1);
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "Form1";
@@ -481,10 +521,14 @@
         private PictureBox pictureBox3;
         private PictureBox pictureBox2;
         private PictureBox pictureBox1;
-        private RadioButton radioButton1;
-        private RadioButton radioButton2;
         private Label labelTurn;
         private Panel panelBoard;
         private Label labelMode;
+        private Button restartButton;
+        private Label redOffLabel;
+        private Label redOnLabel;
+        private Label blueOffLabel;
+        private Label blueOnLabel;
+        private Button enterNames;
     }
 }
