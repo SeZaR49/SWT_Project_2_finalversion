@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using Microsoft.VisualBasic;
 using System.Diagnostics;
 
 namespace SWT_Project_2
 {
     public partial class Form1 : Form
     {
+        private string player1Name = "Red";
+        private string player2Name = "Blue";
         private const int PiecesAtStart = 9;
+        private const int boardAtStart = 0;
         private char turn;
         private List<PictureBox> allPictureBoxes;
         private List<List<int>> mills;
@@ -17,39 +21,46 @@ namespace SWT_Project_2
         private bool capture;
         private int redPieces;
         private int bluePieces;
-        private int redPiecesOnBoard = 0;
-        private int bluePiecesOnBoard = 0;
+        private int redPiecesOnBoard;
+        private int bluePiecesOnBoard;
 
         private List<List<int>> adjacencyList = new List<List<int>>()
         {
-        new List<int> {1, 9},
-        new List<int> {0, 2, 4},
-        new List<int> {1, 14},
-        new List<int> {4, 10},
-        new List<int> {1, 3, 5, 7},
-        new List<int> {4, 13},
-        new List<int> {7, 11},
-        new List<int> {4, 6, 8},
-        new List<int> {7, 12},
-        new List<int> {0, 10, 21},
-        new List<int> {3, 9, 11, 18},
-        new List<int> {6, 10, 15},
-        new List<int> {8, 13, 17},
-        new List<int> {5, 12, 14, 20},
-        new List<int> {2, 13, 23},
-        new List<int> {11, 16},
-        new List<int> {15, 17, 19},
-        new List<int> {12, 16},
-        new List<int> {10, 19},
-        new List<int> {16, 18, 20, 22},
-        new List<int> {13, 19},
-        new List<int> {9, 22},
-        new List<int> {19, 21, 23},
-        new List<int> {14, 22} };
+        new List<int> {1, 9},               // position{0}
+        new List<int> {0, 2, 4},            // position{1}
+        new List<int> {1, 14},              // position{2}
+        new List<int> {4, 10},              // position{3}
+        new List<int> {1, 3, 5, 7},         // position{4}
+        new List<int> {4, 13},              // position{5}
+        new List<int> {7, 11},              // position{6}
+        new List<int> {4, 6, 8},            // position{7}
+        new List<int> {7, 12},              // position{8}
+        new List<int> {0, 10, 21},          // position{9}
+        new List<int> {3, 9, 11, 18},       // position{10}
+        new List<int> {6, 10, 15},          // position{11}
+        new List<int> {8, 13, 17},          // position{12}
+        new List<int> {5, 12, 14, 20},      // position{13}
+        new List<int> {2, 13, 23},          // position{14}
+        new List<int> {11, 16},             // position{15}
+        new List<int> {15, 17, 19},         // position{16}
+        new List<int> {12, 16},             // position{17}
+        new List<int> {10, 19},             // position{18}
+        new List<int> {16, 18, 20, 22},     // position{19}
+        new List<int> {13, 19},             // position{20}
+        new List<int> {9, 22},              // position{21}
+        new List<int> {19, 21, 23},         // position{22}
+        new List<int> {14, 22} };           // position{23}
         public Form1()
         {
             InitializeComponent();
+            SetupPictureBoxes();
             InitializeGame();
+            /*
+            Button restartButton = new Button();
+            restartButton.Text = "Restart Game";
+            restartButton.Location = new Point(754, 755); // You can adjust these values for button's position
+            restartButton.Click += restartButton_Click;
+            this.Controls.Add(restartButton);*/
         }
 
         private void InitializeGame()
@@ -57,7 +68,12 @@ namespace SWT_Project_2
             turn = 'r';
             redPieces = PiecesAtStart;
             bluePieces = PiecesAtStart;
-            allPictureBoxes = new List<PictureBox>();
+
+            redPiecesOnBoard = boardAtStart;
+            bluePiecesOnBoard = boardAtStart;
+            //allPictureBoxes = new List<PictureBox>();
+
+            // all possible mills
             mills = new List<List<int>>()
             {
                 new List<int> { 0, 1, 2 },
@@ -79,9 +95,16 @@ namespace SWT_Project_2
             };
             capture = false;
 
-            
+            foreach (var pictureBox in allPictureBoxes)
+            {
+                // Clearing the image and tag of each PictureBox.
+                pictureBox.Image = null;
+                pictureBox.Tag = null;
+            }
 
-            for (int i = 1; i <= 24; i++) 
+
+            // add PictureBox1 through PictureBox24 to allPictureBoxes list
+            /*for (int i = 1; i <= 24; i++) 
             {
                 string controlName = "pictureBox" + i;
                 Control control = groupBox1.Controls[controlName];
@@ -90,13 +113,34 @@ namespace SWT_Project_2
                 {
                     pictureBox.Click += PictureBox_Click;
                     allPictureBoxes.Add(pictureBox);
-                    Console.WriteLine($"Added {pictureBox.Name} to PictureBoxes list.");
+                    Debug.WriteLine($"Added {pictureBox.Name} to PictureBoxes list.");
                 }
-            }
+            }*/
+
             UpdateTurnLabel();
             UpdateModeLabel();
         }
 
+        private void SetupPictureBoxes()
+        {
+            allPictureBoxes = new List<PictureBox>();
+
+            // Add PictureBox1 through PictureBox24 to allPictureBoxes list
+            for (int i = 1; i <= 24; i++)
+            {
+                string controlName = "pictureBox" + i;
+                Control control = groupBox1.Controls[controlName];
+
+                if (control is PictureBox pictureBox)
+                {
+                    pictureBox.Click += PictureBox_Click;
+                    allPictureBoxes.Add(pictureBox);
+                    Debug.WriteLine($"Added {pictureBox.Name} to PictureBoxes list.");
+                }
+            }
+        }
+
+        // click event for the 24 PictureBoxes
         private void PictureBox_Click(object sender, EventArgs e)
         {
             PictureBox pictureBox = (PictureBox)sender;
@@ -107,7 +151,7 @@ namespace SWT_Project_2
             }
             catch (FormatException)
             {
-                Console.WriteLine("Failed to parse position from PictureBox name.");
+                Debug.WriteLine("Failed to parse position from PictureBox name.");
                 return;
             }
 
@@ -115,6 +159,7 @@ namespace SWT_Project_2
             Debug.WriteLine($"Clicked on position {position}");
             Debug.WriteLine($"*****");
 
+            //capture mode
             if (capture)
             {
                 CapturePiece(pictureBox, position);
@@ -157,7 +202,7 @@ namespace SWT_Project_2
 
 
 
-
+        // Phase 1: Setting pieces
         private void PhaseOnePlacePiece(PictureBox pictureBox, int position)
         {
 
@@ -187,7 +232,7 @@ namespace SWT_Project_2
 
         }
 
-
+        // check if a mill is formed
         private bool checkMill(int position)
         {
             foreach (List<int> mill in mills)
@@ -221,6 +266,7 @@ namespace SWT_Project_2
             return false;
         }
 
+        // go check while playing
         private void CheckForMillAndCapture(PictureBox pictureBox, int position)
         {
             if (checkMill(position))
@@ -234,6 +280,7 @@ namespace SWT_Project_2
             }
         }
 
+        // Phase 2: selecting pieces
         private void PhaseTwoSelectPiece(PictureBox pictureBox)
         {
             if (selectedPictureBox != null)
@@ -245,6 +292,7 @@ namespace SWT_Project_2
             selectedPictureBox = pictureBox;
         }
 
+        // Phase 2: moving pieces
         private void PhaseTwoMovePiece(PictureBox pictureBox)
         {
             // Copy piece from selectedPictureBox to pictureBox
@@ -287,7 +335,7 @@ namespace SWT_Project_2
 
         private bool IsValidMove(int from, int to)
         {
-           // Check if the player is in Phase 3 (only three pieces left on the board)
+            // Check if the player is in Phase 3 (only three pieces left on the board)
             if ((turn == 'r' && redPiecesOnBoard == 3) || (turn == 'b' && bluePiecesOnBoard == 3))
             {
                 // In Phase 3, the player can move to any vacant point
@@ -298,6 +346,7 @@ namespace SWT_Project_2
             return adjacencyList[from].Contains(to);
         }
 
+        // changing the player trun
         private void NextTurn()
         {
             turn = turn == 'r' ? 'b' : 'r';
@@ -314,16 +363,17 @@ namespace SWT_Project_2
 
             if ((redPieces + redPiecesOnBoard) < 3 || (bluePieces + bluePiecesOnBoard) < 3)
             {
-                MessageBox.Show($" Game over! {(redPieces + redPiecesOnBoard < 3 ? "Blue" : "Red")} wins! \n less than 3 Pieces left", "Game Over");
+                MessageBox.Show($" Game over! {(redPieces + redPiecesOnBoard < 3 ? player2Name : player1Name)} wins! \n {(redPieces + redPiecesOnBoard < 3 ? player1Name : player2Name)} has less than 3 Pieces left", "Game Over");
                 InitializeGame();
             }
             else if (redPieces == 0 && bluePieces == 0 && !AnyLegalMoves())
             {
-                MessageBox.Show($" Game over! {(turn == 'r' ? "Blue" : "Red")} wins! \n No more legal moves", "Game Over");
+                MessageBox.Show($" Game over! {(turn == 'r' ? player2Name : player1Name)} wins! \n {(turn == 'r' ? player1Name : player2Name)} has no more legal moves", "Game Over");
                 InitializeGame();
             }
         }
 
+        // check for legal moves
         private bool AnyLegalMoves()
         {
             bool hasValidMove = false;
@@ -353,11 +403,17 @@ namespace SWT_Project_2
             return hasValidMove;
         }
 
+        // turn status
         private void UpdateTurnLabel()
         {
-            labelTurn.Text = $"Turn: {(turn == 'r' ? "Red" : "Blue")}";
+            labelTurn.Text = $"Turn: {(turn == 'r' ? player1Name : player2Name)}";
+            redOffLabel.Text = $"Red pieces: {redPieces}";
+            redOnLabel.Text = $"on board: {redPiecesOnBoard}";
+            blueOffLabel.Text = $"Blue pieces: {bluePieces}";
+            blueOnLabel.Text = $"on board: {bluePiecesOnBoard}";
         }
 
+        // mode status
         private void UpdateModeLabel()
         {
             labelMode.Text = "Mode: Place a piece";
@@ -375,7 +431,28 @@ namespace SWT_Project_2
             }
         }
 
-        
+        private void restartButton_Click(object sender, EventArgs e)
+        {
+            Debug.WriteLine($"restart is clicked");
+            InitializeGame();
+        }
+
+        private void enterNames_Click(object sender, EventArgs e)
+        {
+            // Prompt for player names
+            string tempPlayer1Name = Microsoft.VisualBasic.Interaction.InputBox("Enter name for Player 1 (Red):", "Player 1 Name", "Red");
+            string tempPlayer2Name = Microsoft.VisualBasic.Interaction.InputBox("Enter name for Player 2 (Blue):", "Player 2 Name", "Blue");
+
+            // Set player names if provided
+            if (!string.IsNullOrWhiteSpace(tempPlayer1Name))
+            {
+                player1Name = tempPlayer1Name;
+            }
+
+            if (!string.IsNullOrWhiteSpace(tempPlayer2Name))
+            {
+                player2Name = tempPlayer2Name;
+            }
+        }
     }
 }
-
