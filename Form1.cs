@@ -54,13 +54,7 @@ namespace SWT_Project_2
         {
             InitializeComponent();
             SetupPictureBoxes();
-            InitializeGame();
-            /*
-            Button restartButton = new Button();
-            restartButton.Text = "Restart Game";
-            restartButton.Location = new Point(754, 755); // You can adjust these values for button's position
-            restartButton.Click += restartButton_Click;
-            this.Controls.Add(restartButton);*/
+            InitializeGame();    
         }
 
         private void InitializeGame()
@@ -71,7 +65,6 @@ namespace SWT_Project_2
 
             redPiecesOnBoard = boardAtStart;
             bluePiecesOnBoard = boardAtStart;
-            //allPictureBoxes = new List<PictureBox>();
 
             // all possible mills
             mills = new List<List<int>>()
@@ -102,25 +95,11 @@ namespace SWT_Project_2
                 pictureBox.Tag = null;
             }
 
-
-            // add PictureBox1 through PictureBox24 to allPictureBoxes list
-            /*for (int i = 1; i <= 24; i++) 
-            {
-                string controlName = "pictureBox" + i;
-                Control control = groupBox1.Controls[controlName];
-
-                if (control is PictureBox pictureBox)
-                {
-                    pictureBox.Click += PictureBox_Click;
-                    allPictureBoxes.Add(pictureBox);
-                    Debug.WriteLine($"Added {pictureBox.Name} to PictureBoxes list.");
-                }
-            }*/
-
             UpdateTurnLabel();
             UpdateModeLabel();
         }
 
+        // set all PictureBoxes in list
         private void SetupPictureBoxes()
         {
             allPictureBoxes = new List<PictureBox>();
